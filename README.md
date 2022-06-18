@@ -21,3 +21,5 @@
 ```
 ./main -in input.txt
 ```
+
+![](./img/1.png)
