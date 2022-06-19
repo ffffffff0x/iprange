@@ -15,8 +15,8 @@ var filename = flag.String("in", "", "输入文件名")
 var cidrSlice []string
 var iprangeSlice []string
 var wrongSlice []string
-var ipv4_left = ""
-var ipv4_right = ""
+var ipv4Left = ""
+var ipv4Right = ""
 var numSlice []uint
 
 func main() {
@@ -67,8 +67,10 @@ func todo() {
 	cidr()
 
 	// 处理非预期格式
-	fmt.Println("-----非预期格式-----")
-	wrong()
+	if len(wrongSlice) > 0 {
+		fmt.Println("-----存在非预期格式-----")
+		wrong()
+	}
 
 }
 
@@ -77,12 +79,12 @@ func iprange() {
 	for _, v := range iprangeSlice {
 		arr := strings.Split(v, "-")
 		if len(arr) == 2 {
-			ipv4_left = arr[0]
-			ipv4_right = arr[1]
+			ipv4Left = arr[0]
+			ipv4Right = arr[1]
 			// 左边地址
-			addressRight := net.ParseIP(ipv4_left)
+			addressRight := net.ParseIP(ipv4Left)
 			// 右边地址
-			addressRight2 := net.ParseIP(ipv4_right)
+			addressRight2 := net.ParseIP(ipv4Right)
 			if addressRight == nil {
 				// 格式非预期
 				wrongSlice = append(wrongSlice, v)
@@ -91,8 +93,8 @@ func iprange() {
 				wrongSlice = append(wrongSlice, v)
 			} else {
 				// 转10进制
-				num1, _ := exnet.IPString2Long(ipv4_left)
-				num2, _ := exnet.IPString2Long(ipv4_right)
+				num1, _ := exnet.IPString2Long(ipv4Left)
+				num2, _ := exnet.IPString2Long(ipv4Right)
 				if num1 > num2 {
 					// 格式非预期
 					wrongSlice = append(wrongSlice, v)
